@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Payrole and HRMS"
+        android:text="Company Name"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:id="@+id/company_name"
@@ -70,14 +70,6 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/light_black"
-            android:text="Server Connection"
-            android:layout_margin="5sp"
-            />
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
