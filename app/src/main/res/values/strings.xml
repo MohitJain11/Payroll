@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Payroll</string>
+    <string name="forget_password">Forget Password ?</string>
 </resources>
