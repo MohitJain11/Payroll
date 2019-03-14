@@ -2,11 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mohit.payroll">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".MainActivity" />
@@ -16,8 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Dashboard_activity" />
+        <activity android:name=".Dashboard_activity">
+
+        </activity>
         <activity android:name=".AttendanceActivity" />
-        <activity android:name=".LeaveApplicationActivity"></activity>
+        <activity
+            android:name=".LeaveApplicationActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".AttendanceHistory" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".LeaveBalanceActivity"></activity>
     </application>
+
 </manifest>

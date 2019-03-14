@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="20dp"
+    android:paddingBottom="10dp"
+    android:background="@drawable/notification_background"
+    android:elevation="1dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_notice_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingTop="10dp"
+        android:text="First Notification For Testing"
+        android:textColor="#3c3c3c"
+        android:textSize="15sp" />
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="12sp"-->
+            <!--android:paddingLeft="15dp"-->
+            <!--android:text="Total Count: " />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_total_count"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="15 Jan 2019"-->
+            <!--android:textSize="12sp" />-->
+    <!--</LinearLayout>-->
+
+
+</LinearLayout>

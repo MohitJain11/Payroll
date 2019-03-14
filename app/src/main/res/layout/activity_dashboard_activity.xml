@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     android:orientation="vertical"
     tools:context=".Dashboard_activity">
 
@@ -10,17 +11,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/orange"
+        android:background="@color/app_blue_color"
         android:elevation="4dp">
 
         <TextView
+            android:id="@+id/tv_dashboard_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="App Name"
+            android:text="Shrushti"
             android:textColor="#ffffff"
-            android:textSize="25sp" />
+            android:textSize="22sp" />
     </LinearLayout>
 
     <!--Content-->
@@ -38,16 +40,17 @@
             android:layout_marginBottom="10dp">
             <!--Leave Detail-->
             <LinearLayout
+                android:id="@+id/ll_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/leave_details" />
+                    android:src="@drawable/file" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -55,23 +58,24 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="Leave Details"
+                    android:text="Employee Profile"
                     android:textColor="#3c3c3c"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <!--Leave Application-->
             <LinearLayout
+                android:id="@+id/ll_leave_application"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/leave_application_icon" />
+                    android:src="@drawable/resume" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -79,24 +83,24 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="Leave Application"
+                    android:text="Leave Balance"
                     android:textColor="#3c3c3c"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <!--Attendance-->
             <LinearLayout
+                android:id="@+id/ll_attendance"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:id="@+id/ll_attendance"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/attendance" />
+                    android:src="@drawable/attendance_64" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -104,9 +108,9 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="Attendance"
+                    android:text="Employee Daily Attendance"
                     android:textColor="#3c3c3c"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -116,18 +120,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
-            <!--Leave Detail-->
+            <!--Attendance History-->
             <LinearLayout
+                android:id="@+id/ll_attendance_history"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/history" />
+                    android:src="@drawable/history_file" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -135,9 +140,9 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="Leave History"
+                    android:text="Attendance\nHistory"
                     android:textColor="#3c3c3c"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <!--Leave Application-->
@@ -148,10 +153,10 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/download" />
+                    android:src="@drawable/download_64" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -161,21 +166,22 @@
                     android:gravity="center"
                     android:text="Salary Slip Download"
                     android:textColor="#3c3c3c"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
 
-            <!--Attendance-->
+            <!--LogOut-->
             <LinearLayout
+                android:id="@+id/ll_log_out"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/logout" />
+                    android:src="@drawable/exit" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -185,7 +191,7 @@
                     android:gravity="center"
                     android:text="Log Out"
                     android:textColor="#3c3c3c"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -193,7 +199,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
             <!--Heading-->
             <LinearLayout
@@ -207,7 +213,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:layout_weight="1"
-                    android:background="@color/orange"
+                    android:background="@color/app_blue_color"
                     android:gravity="center" />
 
                 <TextView
@@ -217,8 +223,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Notification"
-                    android:textColor="@color/orange"
-                    android:textSize="18sp" />
+                    android:textColor="@color/app_blue_color"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -226,7 +232,7 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
-                    android:background="@color/orange"
+                    android:background="@color/app_blue_color"
                     android:gravity="center" />
             </LinearLayout>
 
@@ -236,91 +242,39 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_notification"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:elevation="3dp"
-                    android:background="@drawable/notification_background"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                    android:visibility="gone" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="10dp"
-                        android:text="First Notification For Testing"
-                        android:textColor="#3c3c3c"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="15 Jan 2019"
-                        android:textSize="12sp" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:elevation="3dp"
-                    android:background="@drawable/notification_background"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center">
 
-                    <TextView
+                    <ProgressBar
+                        android:id="@+id/notification_loader"
+                        style="?android:attr/progressBarStyleLarge"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="10dp"
-                        android:text="Second Notification For Testing"
-                        android:textColor="#3c3c3c"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="15 Jan 2019"
-                        android:textSize="12sp" />
+                        android:layout_height="70dp"
+                        android:layout_gravity="center"
+                        android:progressDrawable="@drawable/circular_progress_bar" />
                 </LinearLayout>
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_error_message"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:elevation="3dp"
-                    android:background="@drawable/notification_background"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="10dp"
-                        android:text="Notification for checking Notification"
-                        android:textColor="#3c3c3c"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="15 Jan 2019"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Error Message"
+                    android:textColor="@color/dary_grey"
+                    android:textSize="20sp" />
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

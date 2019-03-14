@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background_gradient"
     tools:context=".LeaveApplicationActivity">
 
     <!--Action Bar-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/orange"
+        android:background="@color/app_blue_color"
         android:elevation="4dp">
 
         <TextView
@@ -20,69 +21,450 @@
             android:gravity="center"
             android:text="Leave Application"
             android:textColor="#ffffff"
-            android:textSize="25sp" />
+            android:textSize="22sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_height="50dp"
+        android:background="@color/app_blue_color"
+        android:elevation="4dp"
+        android:orientation="horizontal">
 
-            <EditText
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:id="@+id/from_date"
+        <TextView
+            android:id="@+id/tv_apply_leave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Apply Leave"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_previous_leave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Previous Leave"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_blue_color"
+        android:elevation="4dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <View
+                android:id="@+id/view_apply_leave"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:focusable="false"
-                android:hint="@string/select_from_date"
-                android:layout_margin="5sp"
-                android:inputType="date"
-                />
-            <EditText
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:id="@+id/to_date"
-                android:layout_weight="1"
-                android:focusable="false"
-                android:inputType="date"
-                android:hint="@string/select_to_date"
-                android:layout_margin="5sp"
-                />
+                android:background="#ffffff"
+                android:gravity="center" />
         </LinearLayout>
 
-        <Spinner
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/leave_type"
-            android:layout_margin="10sp"
-            />
+            android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
-        <EditText
-            android:inputType="textMultiLine"
-            android:lines="3"
-            android:minLines="2"
-            android:gravity="top|left"
-            android:maxLines="10"
-            android:hint="@string/type_your_remark"
-            android:layout_margin="10sp"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:scrollbars="vertical"
-            android:id="@+id/remark"
-            />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/submit"
-            android:text="@string/submit"
-            android:background="@color/orange"
-            android:layout_margin="10sp"
-            android:onClick="leaveSubmit"
-            />
+            <View
+                android:id="@+id/view_previous_leave"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:gravity="center" />
+        </LinearLayout>
+
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_main_apply_leave"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Approval Authority: "
+                        android:textColor="#0000ff" />
+
+                    <TextView
+                        android:id="@+id/tv_approval_authority"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#0000ff" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="2dp"-->
+                        <!--android:text="Leave From"-->
+                        <!--android:textColor="@color/orange"-->
+                        <!--android:textSize="15dp" />-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/from_date"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="@drawable/border"-->
+                        <!--android:focusable="false"-->
+                        <!--android:hint="@string/select_from_date"-->
+                        <!--android:inputType="date"-->
+                        <!--android:padding="8dp" />-->
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8sp">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/from_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="From Date*"
+                            android:focusable="false"
+                            android:text=""
+                            android:textColorHint="@color/light_black" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_from_first_halfday"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:text="Half Day"
+                        android:textSize="14sp" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup_by_from_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="vertical"
+                        android:paddingLeft="15px">
+
+                        <RadioButton
+                            android:id="@+id/radioButton_first_half"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="First Half"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_second_half"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Second Half"
+                            android:textSize="14sp" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_to_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginBottom="2dp"-->
+                            <!--android:text="Leave To"-->
+                            <!--android:textColor="@color/orange"-->
+                            <!--android:textSize="15dp" />-->
+
+                        <!--<EditText-->
+                            <!--android:id="@+id/to_date"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="@drawable/border"-->
+                            <!--android:focusable="false"-->
+                            <!--android:hint="@string/select_to_date"-->
+                            <!--android:inputType="date"-->
+                            <!--android:padding="8dp" />-->
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8sp">
+
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/to_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="To Date"
+                                android:focusable="false"
+                                android:text=""
+                                android:textColorHint="@color/light_black" />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5sp"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/checkbox_to_first_halfday"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Half Day"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leave Type:  "
+                        android:textColor="#3c3c3c"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_leave_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#3c3c3c"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <!--Remark-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:orientation="vertical">
+
+                    <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="2dp"-->
+                    <!--android:text="Remark"-->
+                    <!--android:textColor="@color/orange"-->
+                    <!--android:textSize="15sp" />-->
+
+                    <!--<EditText-->
+                    <!--android:id="@+id/remark"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@drawable/border"-->
+                    <!--android:gravity="top|left"-->
+                    <!--android:hint="@string/type_your_remark"-->
+                    <!--android:inputType="textMultiLine"-->
+                    <!--android:lines="3"-->
+                    <!--android:maxLines="10"-->
+                    <!--android:minLines="2"-->
+                    <!--android:paddingLeft="5dp"-->
+                    <!--android:paddingTop="5dp"-->
+                    <!--android:scrollbars="vertical" />-->
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8sp">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/remark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Type your remark"
+                            android:inputType="text"
+                            android:lines="3"
+                            android:maxLines="10"
+                            android:minLines="2"
+                            android:text=""
+                            android:textColorHint="@color/light_black" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <!--Submit Button-->
+                <Button
+                    android:id="@+id/button_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/background_login_button"
+                    android:text="@string/submit"
+                    android:textColor="#fff" />
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+    <!--Previous Leave Application-->
+    <LinearLayout
+        android:id="@+id/ll_main_previous_leave"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+        <!--Heading-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<View-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@color/orange"-->
+        <!--android:gravity="center" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_weight="3"-->
+        <!--android:gravity="center"-->
+        <!--android:text="Previous leave applied"-->
+        <!--android:textColor="@color/orange"-->
+        <!--android:textSize="15sp" />-->
+
+        <!--<View-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@color/orange"-->
+        <!--android:gravity="center" />-->
+        <!--</LinearLayout>-->
+
+        <!--Previous Leave Content-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_leave_applied"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp">
+
+                <ProgressBar
+                    android:id="@+id/leave_application_loader"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:progressDrawable="@drawable/circular_progress_bar" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_error_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Error Message"
+                    android:textColor="@color/dary_grey"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

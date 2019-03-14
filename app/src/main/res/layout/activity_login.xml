@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@drawable/background_gradient"
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
@@ -22,13 +22,13 @@
             android:layout_width="80dp"
             android:layout_height="80sp"
             android:gravity="center"
-            app:srcCompat="@drawable/ic_man" />
+            app:srcCompat="@drawable/logo" />
 
         <TextView
             android:id="@+id/company_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Company Name"
+            android:text="Shrushti Seva Samiti"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -71,7 +71,8 @@
                 android:id="@+id/login_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Login Id"
+                android:hint="Employee Code"
+                android:text=""
                 android:inputType="text"
                 android:textColorHint="@color/light_black" />
         </android.support.design.widget.TextInputLayout>
@@ -86,6 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
+                android:text=""
                 android:inputType="textPassword"
                 android:textColorHint="@color/light_black" />
         </android.support.design.widget.TextInputLayout>
@@ -94,17 +96,19 @@
     <!--Button-->
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <Button
             android:layout_width="match_parent"
+            android:id="@+id/button_login"
             android:layout_height="wrap_content"
-            android:layout_margin="5sp"
+            android:layout_margin="10sp"
             android:layout_weight="1"
-            android:textSize="15sp"
-            android:onClick="login"
-            android:background="@color/orange"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:background="@drawable/background_login_button"
             android:text="Login" />
 
         <TextView
@@ -113,11 +117,11 @@
             android:layout_gravity="center"
             android:layout_margin="8sp"
             android:gravity="center"
+            android:visibility="gone"
             android:text="@string/forget_password"
             android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
 
 
->>>>>>> cb9b8ecd7ace204395fbeed10ec6007f4b32aa92
 </LinearLayout>
