@@ -1,7 +1,7 @@
 package com.example.mohit.payroll.Extras;
 
 public class Url {
-    public static final String Url_IP = "49.50.66.125:7398";
+    public static final String Url_IP = "49.50.66.126:8686";
 
     public static String GetUserLoginApp = "http://" + Url_IP + "/api/login/GetUserLoginApp";
     public static String GetCurrentAttendanceData = "http://" + Url_IP + "/api/attendance/GetCurrentAttendanceData";
