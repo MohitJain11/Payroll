@@ -11,12 +11,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,7 +45,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -304,8 +301,10 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
                                 String[] inTime = returnValue.getString("inTime").split("T");
                                 String[] outDate = returnValue.getString("outDate").split("T");
                                 String[] outTime = returnValue.getString("outTime").split("T");
-                                in_date_gray.setText(inDate[0] + "\n" + inTime[1]);
-                                out_date_gray.setText(outDate[0] + "\n" + outTime[1]);
+//                                in_date_gray.setText(inDate[0] + "\n" + inTime[1]);
+                                in_date_gray.setText(inDate[0] + "\n" + checkOutDateTime(inTime[1]));
+//                                out_date_gray.setText(outDate[0] + "\n" + outTime[1]);
+                                out_date_gray.setText(outDate[0] + "\n" + checkOutDateTime(outTime[1]));
                             } else {
                                 ll_in_button_gray.setVisibility(View.VISIBLE);
                                 ll_out_button_gray.setVisibility(View.GONE);
@@ -314,7 +313,7 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
                                 ll_photo_upload.setVisibility(View.GONE);
                                 String[] inDate = returnValue.getString("inDate").split("T");
                                 String[] inTime = returnValue.getString("inTime").split("T");
-                                in_date_gray.setText(inDate[0] + "\n" + inTime[1]);
+                                in_date_gray.setText(inDate[0] + "\n" +  checkOutDateTime(inTime[1]));
                             }
                         } else {
                             ll_in_button_gray.setVisibility(View.GONE);
@@ -365,7 +364,7 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-        SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
         String currentDate = sdfDate.format(new Date());
         String currentTime = sdfTime.format(new Date());
 
@@ -593,6 +592,29 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
                 }
                 break;
         }
+    }
+
+    public String checkOutDateTime(String bigTime) {
+//        final String time = bigTime;
+//
+//        try {
+//            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
+//            final Date dateObj = sdf.parse(time);
+//            return (new SimpleDateFormat("K:mm").format(dateObj));
+//        } catch (final ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+
+        String time[] = bigTime.split(":");
+        if (Integer.parseInt(time[0]) > 11) {
+            String convertedTime = "" + (Integer.parseInt(time[0]) - 12);
+            if ((Integer.parseInt(time[0]) - 12) > 9)
+                return "" + convertedTime + ":" + time[1] + " PM";
+            else
+                return "0" + convertedTime + ":" + time[1] + " PM";
+        } else
+            return time[0] + ":" + time[1] + " AM";
     }
 
     public void showSettingsAlert() {

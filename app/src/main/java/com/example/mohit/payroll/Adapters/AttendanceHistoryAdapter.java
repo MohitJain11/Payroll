@@ -55,8 +55,14 @@ public class AttendanceHistoryAdapter extends RecyclerView.Adapter<AttendanceHis
             outTime = new String[]{"-", "-"};
         try {
             holder.tv_attendance_date.setText(GenFunction.convertDDMMYYYYTODDMMMYYYY(punchDate[0]));
-            holder.tv_in_time.setText(inTime[1]);
-            holder.tv_out_time.setText(outTime[1]);
+            if (!inTime[0].equals("-"))
+                holder.tv_in_time.setText(checkOutDateTime(inTime[1]));
+            else
+                holder.tv_in_time.setText("-");
+            if (!outTime[0].equals("-"))
+                holder.tv_out_time.setText(checkOutDateTime(outTime[1]));
+            else
+                holder.tv_out_time.setText("-");
             holder.tv_in_time.setTextColor(Color.parseColor(attendanceHistoryModel.getInColor()));
             holder.tv_out_time.setTextColor(Color.parseColor(attendanceHistoryModel.getOutColor()));
         } catch (Exception e) {
@@ -79,5 +85,17 @@ public class AttendanceHistoryAdapter extends RecyclerView.Adapter<AttendanceHis
     @Override
     public int getItemCount() {
         return attendanceHistoryList.size();
+    }
+
+    public String checkOutDateTime(String bigTime) {
+        String time[] = bigTime.split(":");
+        if (Integer.parseInt(time[0]) > 11) {
+            String convertedTime = "" + (Integer.parseInt(time[0]) - 12);
+            if ((Integer.parseInt(time[0]) - 12) > 9)
+                return "" + convertedTime + ":" + time[1] + " PM";
+            else
+                return "0" + convertedTime + ":" + time[1] + " PM";
+        } else
+            return time[0] + ":" + time[1] + " AM";
     }
 }
