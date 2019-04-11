@@ -53,6 +53,7 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
             public void onClick(View view) {
                 LeaveBalanceActivity.selectedLeaveBalanceData = leaveBalanceModel;
                 Intent intent = new Intent(context, LeaveApplicationActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

@@ -14,4 +14,5 @@ public class Url {
     public static String GetApplyLeaveData = "http://" + Url_IP + "/api/ApplyLeave/GetApplyLeaveData";
     public static String DeleteApplyLeaveData = "http://" + Url_IP + "/api/ApplyLeave/DeleteApplyLeaveData";
 
+
 }

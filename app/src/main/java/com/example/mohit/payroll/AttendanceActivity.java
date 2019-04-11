@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
@@ -30,8 +32,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mohit.payroll.DB_Handler.AttendanceSaveHandler;
 import com.example.mohit.payroll.Extras.GenFunction;
 import com.example.mohit.payroll.Extras.Url;
+import com.example.mohit.payroll.models.AttendanceSaveModel;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -71,12 +75,14 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
     TextView out_date_gray, out_date, in_date_gray, in_date;
     String encodedImage;
 
+    AttendanceSaveHandler attendanceSaveHandler;
+    SQLiteDatabase sqLiteDatabase;
+
     //////Geo Location
     final String TAG = "GPS";
     private final static int ALL_PERMISSIONS_RESULT = 101;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
-
     LocationManager locationManager;
     Location loc;
     ArrayList<String> permissions = new ArrayList<>();
@@ -94,6 +100,8 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
         progressDialog = new ProgressDialog(AttendanceActivity.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
+
+        attendanceSaveHandler = new AttendanceSaveHandler(getApplicationContext());
 
         SharedPreferences prefs = getSharedPreferences("LoginData", MODE_PRIVATE);
         id = prefs.getString("id", null);
@@ -187,12 +195,15 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
             @Override
             public void onClick(View view) {
                 if (image != null) {
-//                    ll_buttons.setVisibility(View.VISIBLE);
-                    if (GenFunction.isNetworkAvailable(AttendanceActivity.this)) {
-                        new SaveAttendanceData().execute();
-                    } else {
-                        Toast.makeText(AttendanceActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
-                    }
+//                    if (GenFunction.isNetworkAvailable(AttendanceActivity.this)) {
+//                        new SaveAttendanceData().execute();
+//                    } else {
+//                        if (checkDataAvailable()) {
+//                            Toast.makeText(AttendanceActivity.this, "First Sync Previous Data", Toast.LENGTH_SHORT).show();
+//                        } else {
+                            saveAttendanceWhenNoInternet();
+//                        }
+//                    }
                 } else
                     Toast.makeText(AttendanceActivity.this, "Please Click a photo", Toast.LENGTH_SHORT).show();
             }
@@ -313,7 +324,7 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
                                 ll_photo_upload.setVisibility(View.GONE);
                                 String[] inDate = returnValue.getString("inDate").split("T");
                                 String[] inTime = returnValue.getString("inTime").split("T");
-                                in_date_gray.setText(inDate[0] + "\n" +  checkOutDateTime(inTime[1]));
+                                in_date_gray.setText(inDate[0] + "\n" + checkOutDateTime(inTime[1]));
                             }
                         } else {
                             ll_in_button_gray.setVisibility(View.GONE);
@@ -387,8 +398,13 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
                 json.put("year", year);
                 json.put("punchDate", currentDate);
                 json.put("punchTime", currentTime);
-                json.put("gpslocation", loc.getLatitude() + "," + loc.getLongitude());
+                if (loc == null) {
+                    json.put("gpslocation", "");
+                } else {
+                    json.put("gpslocation", loc.getLatitude() + "," + loc.getLongitude());
+                }
                 json.put("punchStatus", punchStatus);
+//                json.put("punchImage", "");
                 json.put("punchImage", encodedImage);
                 Log.i("json req saveattendance", json.toString());
                 httppost.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));
@@ -452,6 +468,64 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
                 progressDialog.dismiss();
             }
         }
+    }
+
+    private boolean checkDataAvailable() {
+        sqLiteDatabase = attendanceSaveHandler.getWritableDatabase();
+        Cursor cursor = attendanceSaveHandler.getinformation(sqLiteDatabase);
+        if (cursor.moveToFirst()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void getAttendanceWhenNoInternet(){
+        sqLiteDatabase = attendanceSaveHandler.getWritableDatabase();
+        Cursor cursor = attendanceSaveHandler.getAttendance(sqLiteDatabase);
+        if (cursor.moveToFirst()){
+            do{
+                String punchStatus = cursor.getString(cursor.getColumnIndex("punchStatus"));
+                if(punchStatus.equals("In")){
+
+                }
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+    }
+
+    private void saveAttendanceWhenNoInternet() {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+        String currentDate = sdfDate.format(new Date());
+        String currentTime = sdfTime.format(new Date());
+
+        sqLiteDatabase = attendanceSaveHandler.getWritableDatabase();
+        AttendanceSaveModel ultm = new AttendanceSaveModel();
+        ultm.employeeId = Integer.parseInt(id);
+        ultm.month = month + 1;
+        ultm.year = year;
+        ultm.punchDate = currentDate;
+        ultm.punchTime = currentTime;
+        if (loc == null) {
+            ultm.gpslocation = "";
+        } else {
+            ultm.gpslocation = loc.getLatitude() + "," + loc.getLongitude();
+        }
+        ultm.punchStatus = punchStatus;
+        ultm.punchImage = encodedImage;
+        ultm.isSync = "N";
+        attendanceSaveHandler.addinnformation(ultm, sqLiteDatabase);
+        attendanceSaveHandler.close();
+
+        String message = "Attendance Saved Successfully";
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(AttendanceActivity.this, Dashboard_activity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     ////Geo Location ////////
