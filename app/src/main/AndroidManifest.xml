@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mohit.payroll">
+    package="com.kspay.shrusthi.app">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,26 +13,26 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name="com.kspay.shrusthi.app.MainActivity" />
+        <activity android:name="com.kspay.shrusthi.app.LoginActivity">
             <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Dashboard_activity">
+        <activity android:name="com.kspay.shrusthi.app.Dashboard_activity">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".AttendanceActivity" />
+        <activity android:name="com.kspay.shrusthi.app.AttendanceActivity" />
         <activity
-            android:name=".LeaveApplicationActivity"
+            android:name="com.kspay.shrusthi.app.LeaveApplicationActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".AttendanceHistory" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".LeaveBalanceActivity"></activity>
+        <activity android:name="com.kspay.shrusthi.app.AttendanceHistory" />
+        <activity android:name="com.kspay.shrusthi.app.ProfileActivity" />
+        <activity android:name="com.kspay.shrusthi.app.LeaveBalanceActivity"></activity>
     </application>
 
 </manifest>
