@@ -279,7 +279,7 @@ public class LeaveApplicationActivity extends AppCompatActivity {
 
             }
         }, year, month, day);
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+//        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 

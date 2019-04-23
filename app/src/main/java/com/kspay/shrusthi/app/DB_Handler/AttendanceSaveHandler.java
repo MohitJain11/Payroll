@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.kspay.shrusthi.app.Extras.db_class;
 import com.kspay.shrusthi.app.models.AttendanceSaveModel;
@@ -91,19 +92,24 @@ public class AttendanceSaveHandler extends SQLiteOpenHelper {
         db.execSQL(Delete_QUERY);
     }
 
-    public Cursor getAttendance(SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery("Select * FROM " + TABLE_NAME, null);
+    public Cursor getAttendance(SQLiteDatabase db, String empId) {
+        Cursor cursor = db.rawQuery("Select * FROM " + TABLE_NAME + " WHERE " + employeeId + " = '" + empId + "'", null);
         return cursor;
     }
 
     //
-    public Cursor getNoSyncAttendance(SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery("Select * FROM " + TABLE_NAME + " WHERE " + isSync + " = " + "'N'", null);
+    public Cursor getNoSyncAttendance(SQLiteDatabase db, String empId) {
+        Cursor cursor = db.rawQuery("Select * FROM " + TABLE_NAME + " WHERE " + isSync + " = " + "'N' AND " + employeeId + "='" + empId + "'", null);
         return cursor;
     }
 
-    public Cursor updateNoSyncAttendance(SQLiteDatabase db, String tempPunchDate, String tempPunchTime) {
-        Cursor cursor = db.rawQuery("Update " + TABLE_NAME + " set isSync = " + "'Y'" + " WHERE punchTime" + " = '" + tempPunchTime + "' AND punchDate = '" + tempPunchDate +"'", null);
-        return cursor;
+    public void updateNoSyncAttendance(SQLiteDatabase db, String tempPunchDate, String tempPunchTime, String empId) {
+        ContentValues args = new ContentValues();
+        args.put(isSync, "Y");
+        String condition = ""+employeeId+"= '"+ empId+"' AND "+punchTime+"='"+tempPunchTime+"'  AND "+punchDate+"='"+tempPunchDate+"'";
+        int i = db.update(TABLE_NAME, args, condition, null);
+//        Cursor cursor = db.rawQuery("Update " + TABLE_NAME + " set " + isSync + " = " + "'Y'" + " WHERE " + employeeId + " = '" + empId + "' AND " + punchTime + " = '" + tempPunchTime + "' AND " + punchDate + " = '" + tempPunchDate + "'", null);
+//        return cursor;
+        Log.i("Update return value",i+"");
     }
 }

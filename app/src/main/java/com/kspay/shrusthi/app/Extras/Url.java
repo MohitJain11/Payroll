@@ -13,6 +13,8 @@ public class Url {
     public static String SaveApplyLeaveData = "http://" + Url_IP + "/api/ApplyLeave/SaveApplyLeaveData";
     public static String GetApplyLeaveData = "http://" + Url_IP + "/api/ApplyLeave/GetApplyLeaveData";
     public static String DeleteApplyLeaveData = "http://" + Url_IP + "/api/ApplyLeave/DeleteApplyLeaveData";
+    public static String GetMonthName = "http://" + Url_IP + "/api/AllDropdowns/GetMonthName";
+    public static String GetSalarySlipData = "http://" + Url_IP + "/api/SalaryDetailReport/GetSalarySlipData";
 
 
 }

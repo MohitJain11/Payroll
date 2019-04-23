@@ -477,7 +477,7 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
         int tempCount = 0;
         if (cursor.moveToFirst()) {
             do {
-                if ((cursor.getString(cursor.getColumnIndex("isSync"))).equals("N")) {
+                if ((cursor.getString(cursor.getColumnIndex("isSync"))).equals("N")  && (cursor.getString(cursor.getColumnIndex("employeeId"))).equals(id)) {
                     tempCount++;
                 }
                 if (tempCount == 2) {
@@ -490,7 +490,7 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
 
     private void getAttendanceWhenNoInternet() {
         sqLiteDatabase = attendanceSaveHandler.getWritableDatabase();
-        Cursor cursor = attendanceSaveHandler.getAttendance(sqLiteDatabase);
+        Cursor cursor = attendanceSaveHandler.getAttendance(sqLiteDatabase, id);
         Boolean inStatus = false;
         Boolean outStatus = false;
         String inTime = "";
@@ -544,6 +544,12 @@ public class AttendanceActivity extends AppCompatActivity implements LocationLis
 //                        String[] inTime = returnValue.getString("inTime").split("T");
                     in_date_gray.setText(inDate + "\n" + checkOutDateTime(inTime));
                 }
+            } else {
+                ll_in_button_gray.setVisibility(View.GONE);
+                ll_out_button_gray.setVisibility(View.VISIBLE);
+                ll_in_button.setVisibility(View.VISIBLE);
+                ll_out_button.setVisibility(View.GONE);
+                ll_photo_upload.setVisibility(View.GONE);
             }
         } else {
             ll_in_button_gray.setVisibility(View.GONE);

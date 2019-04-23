@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -14,9 +15,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +31,7 @@ import com.kspay.shrusthi.app.DB_Handler.AttendanceSaveHandler;
 import com.kspay.shrusthi.app.Extras.GenFunction;
 import com.kspay.shrusthi.app.Extras.Url;
 import com.kspay.shrusthi.app.models.AttendanceSaveModel;
+import com.kspay.shrusthi.app.models.MonthsModel;
 import com.kspay.shrusthi.app.models.NotificationModel;
 
 import org.apache.http.client.HttpClient;
@@ -45,7 +52,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Dashboard_activity extends Activity {
+public class Dashboard_activity extends Activity implements AdapterView.OnItemSelectedListener {
 
     LinearLayout ll_attendance;
     LinearLayout ll_leave_application;
@@ -62,6 +69,13 @@ public class Dashboard_activity extends Activity {
     ArrayList<AttendanceSaveModel> saveAttendanceList = null;
     AttendanceSaveModel tempSaveAttendanceModel = new AttendanceSaveModel();
     int temaIndex = 0;
+    String id;
+
+    LinearLayout ll_salary_slip_download;
+    ArrayList<MonthsModel> monthList = null;
+    String monthNamesList[];
+    String selectedMonthName;
+    String downloadPdfUrl = "";
     /////Notification List//////
     private List<NotificationModel> notificationList = new ArrayList<>();
     private RecyclerView recycler_view_notification;
@@ -89,6 +103,7 @@ public class Dashboard_activity extends Activity {
         tv_dashboard_name = findViewById(R.id.tv_dashboard_name);
         SharedPreferences prefs = getSharedPreferences("LoginData", MODE_PRIVATE);
         String restoredText = prefs.getString("userName", null);
+        id = prefs.getString("id", null);
         if (restoredText != null) {
             tv_dashboard_name.setText("Hello " + restoredText);
         }
@@ -117,6 +132,17 @@ public class Dashboard_activity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AttendanceHistory.class);
                 startActivity(intent);
+            }
+        });
+
+        LayoutInflater li = LayoutInflater.from(Dashboard_activity.this);
+//        View promptsView = li.inflate(R.layout.date_dialog, null);
+        ll_salary_slip_download = findViewById(R.id.ll_salary_slip_download);
+        new GetMonthName().execute();
+        ll_salary_slip_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSalarySlipDownloadPopup();
             }
         });
 
@@ -173,6 +199,20 @@ public class Dashboard_activity extends Activity {
 
     }
 
+    //Performing action onItemSelected and onNothing selected
+    @Override
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+        selectedMonthName = monthNamesList[position];
+//        Toast.makeText(this, selectedMonthName, Toast.LENGTH_SHORT).show();
+        downloadPdfUrl = "";
+        new GetSalarySlipData().execute();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -183,11 +223,11 @@ public class Dashboard_activity extends Activity {
 
     private void SaveAttendanceData() {
         sqLiteDatabase = attendanceSaveHandler.getWritableDatabase();
-        Cursor cursor = attendanceSaveHandler.getNoSyncAttendance(sqLiteDatabase);
+        Cursor cursor = attendanceSaveHandler.getNoSyncAttendance(sqLiteDatabase, id);
         saveAttendanceList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                if ((cursor.getString(cursor.getColumnIndex("isSync"))).equals("N")) {
+                if ((cursor.getString(cursor.getColumnIndex("isSync"))).equals("N") && (cursor.getString(cursor.getColumnIndex("employeeId"))).equals(id)) {
                     AttendanceSaveModel attendanceSaveModel = new AttendanceSaveModel();
                     attendanceSaveModel.employeeId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("employeeId")));
                     attendanceSaveModel.month = Integer.parseInt(cursor.getString(cursor.getColumnIndex("month")));
@@ -381,19 +421,20 @@ public class Dashboard_activity extends Activity {
                         progressDialog.dismiss();
                     } else {
                         errorMessage = jsonobject.getString("errorMessage");
-                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
                     if (temaIndex < saveAttendanceList.size()) {
                         sqLiteDatabase = attendanceSaveHandler.getWritableDatabase();
-                        attendanceSaveHandler.updateNoSyncAttendance(sqLiteDatabase, tempSaveAttendanceModel.punchDate, tempSaveAttendanceModel.punchTime);
+                        attendanceSaveHandler.updateNoSyncAttendance(sqLiteDatabase, tempSaveAttendanceModel.punchDate, tempSaveAttendanceModel.punchTime, id);
                         temaIndex++;
                         tempSaveAttendanceModel = saveAttendanceList.get(temaIndex - 1);
                         new SaveAttendanceData().execute();
                     } else {
-                        if(temaIndex == saveAttendanceList.size()){
+                        if (temaIndex == saveAttendanceList.size()) {
                             sqLiteDatabase = attendanceSaveHandler.getWritableDatabase();
-                            attendanceSaveHandler.updateNoSyncAttendance(sqLiteDatabase, tempSaveAttendanceModel.punchDate, tempSaveAttendanceModel.punchTime);
+                            attendanceSaveHandler.updateNoSyncAttendance(sqLiteDatabase, tempSaveAttendanceModel.punchDate, tempSaveAttendanceModel.punchTime, id);
+                            temaIndex = 0;
                         }
                     }
                 } else {
@@ -404,6 +445,221 @@ public class Dashboard_activity extends Activity {
                 e.printStackTrace();
                 progressDialog.dismiss();
             }
+        }
+    }
+
+    public void openSalarySlipDownloadPopup() {
+        LayoutInflater li = LayoutInflater.from(Dashboard_activity.this);
+        View promptsView = li.inflate(R.layout.date_dialog, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                Dashboard_activity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        // create alert dialog
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+
+        final Button button_salary_download = (Button) promptsView.findViewById(R.id.button_salary_download);
+        final Spinner date_selection_spinner = (Spinner) promptsView.findViewById(R.id.date_selection_spinner);
+
+        date_selection_spinner.setOnItemSelectedListener(Dashboard_activity.this);
+        ArrayAdapter aa = new ArrayAdapter(Dashboard_activity.this, android.R.layout.simple_spinner_item, monthNamesList);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        date_selection_spinner.setAdapter(aa);
+
+        button_salary_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downLoadPdf();
+                alertDialog.dismiss();
+            }
+        });
+
+        // show it
+        alertDialog.show();
+    }
+
+    /////List of Date to fill Spinner/////
+    class GetMonthName extends AsyncTask<String, Void, Void> {
+        JSONObject jsonobject, returnValue;
+        Boolean status;
+        Boolean isExceptionOccured;
+        String errorMessage, message;
+        JSONArray returnData;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            HttpClient httpclient = new DefaultHttpClient();
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            HttpPost httppost = new HttpPost(Url.GetMonthName);
+            httppost.setHeader("Content-Type", "application/json");
+            try {
+                JSONObject json = new JSONObject();
+                json.put("MODE", "getmonthname");
+                Log.i("json req getMonths", json.toString());
+                httppost.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));
+                String responseBody = httpclient.execute(httppost, responseHandler);
+                jsonobject = new JSONObject(responseBody);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                Toast.makeText(LoginActivity.this, "Something went worng!", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                Toast.makeText(LoginActivity.this, "Something went worng!", Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                Toast.makeText(LoginActivity.this, "Something went worng!", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                progressDialog.dismiss();
+//                Toast.makeText(LoginActivity.this, "Something went worng!", Toast.LENGTH_SHORT).show();
+            } finally {
+                progressDialog.dismiss();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                if (jsonobject != null) {
+                    isExceptionOccured = jsonobject.getBoolean("isExceptionOccured");
+                    status = jsonobject.getBoolean("status");
+                    if (status && !isExceptionOccured) {
+                        progressDialog.dismiss();
+                        monthList = new ArrayList<>();
+                        returnData = new JSONArray(jsonobject.getString("returnValue"));
+                        monthNamesList = new String[returnData.length()];
+                        for (int i = 0; i < returnData.length(); i++) {
+                            returnValue = returnData.getJSONObject(i);
+                            monthNamesList[i] = returnValue.getString("value");
+                            int id = returnValue.getInt("id");
+                            String value = returnValue.getString("value");
+                            String mode = returnValue.getString("mode");
+                            MonthsModel monthsModel = new MonthsModel(id, value, mode);
+                            monthList.add(monthsModel);
+                        }
+                    } else {
+                        errorMessage = jsonobject.getString("errorMessage");
+                        progressDialog.dismiss();
+                        Toast.makeText(Dashboard_activity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(Dashboard_activity.this, "Please try again later!", Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            }
+        }
+    }
+
+    /////Get Pdf link/////
+    class GetSalarySlipData extends AsyncTask<String, Void, Void> {
+        JSONObject jsonobject, returnValue;
+        Boolean status;
+        Boolean isExceptionOccured;
+        String errorMessage, message;
+        JSONArray returnData;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            HttpClient httpclient = new DefaultHttpClient();
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            HttpPost httppost = new HttpPost(Url.GetSalarySlipData);
+            httppost.setHeader("Content-Type", "application/json");
+            try {
+                JSONObject json = new JSONObject();
+                json.put("monthId", getMonthId());
+//                json.put("reportname", "salaryslip");
+//                json.put("userId", id);
+                json.put("ERPID", id);
+                Log.i("json req getMonths", json.toString());
+                httppost.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));
+                String responseBody = httpclient.execute(httppost, responseHandler);
+                jsonobject = new JSONObject(responseBody);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                Toast.makeText(LoginActivity.this, "Something went worng!", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                Toast.makeText(LoginActivity.this, "Something went worng!", Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                Toast.makeText(LoginActivity.this, "Something went worng!", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                progressDialog.dismiss();
+//                Toast.makeText(LoginActivity.this, "Something went worng!", Toast.LENGTH_SHORT).show();
+            } finally {
+                progressDialog.dismiss();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                if (jsonobject != null) {
+                    isExceptionOccured = jsonobject.getBoolean("isExceptionOccured");
+                    status = jsonobject.getBoolean("status");
+                    if (status && !isExceptionOccured) {
+                        progressDialog.dismiss();
+//                        monthList = new ArrayList<>();
+                        returnValue = jsonobject.getJSONObject("returnValue");
+                        downloadPdfUrl = returnValue.getString("downloadURL");
+                    } else {
+                        errorMessage = jsonobject.getString("errorMessage");
+                        progressDialog.dismiss();
+//                        Toast.makeText(Dashboard_activity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(Dashboard_activity.this, "Please try again later!", Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            }
+        }
+    }
+
+    private int getMonthId() {
+        for (int i = 0; i < monthList.size(); i++) {
+            MonthsModel monthsModel = monthList.get(i);
+            if(selectedMonthName.equals(monthsModel.getValue())){
+                return monthsModel.getId();
+            }
+        }
+        return 0;
+    }
+
+    private void downLoadPdf(){
+        if(!downloadPdfUrl.equals("")){
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(downloadPdfUrl)));
+        } else {
+            Toast.makeText(this, "No PDF Available", Toast.LENGTH_SHORT).show();
         }
     }
 
